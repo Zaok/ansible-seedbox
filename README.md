@@ -1,2 +1,12 @@
 # puppet-seedbox
-Deploy a multiuser see box via puppet
+Deploy a multiuser seedbox via puppet
+
+
+## Work in progress
+
+-Apache
+-Rtorrent
+-Sickrage
+-Couchpotato
+-FTP
+-Plex
