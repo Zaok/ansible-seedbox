@@ -1,4 +1,4 @@
-# puppet-seedbox
+# ansible-seedbox
 Deploy a multiuser seedbox via puppet
 
 
