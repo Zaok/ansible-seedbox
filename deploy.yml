@@ -1,0 +1,7 @@
+---
+  - name: Start Ansible deploy
+    hosts: all
+#  become: true //sudo
+
+roles:
+  - seedbox
