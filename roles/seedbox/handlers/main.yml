@@ -2,3 +2,8 @@
   #SSH - restart
   - name: restart sshd
     service: name=ssh state=restarted
+
+  #apache2
+  - name: restart apache2
+    service: name=apache2 state=restarted
+    

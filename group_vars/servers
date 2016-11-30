@@ -5,4 +5,6 @@ ansible_ssh_user: root
 
 #APACHE
 
-#
+packages: [ 'vim',  'curl', 'apache2',  'rtorrent'  ]
+
+a2enmods: [ 'ssl',  'auth_digest', 'scgi' ]
