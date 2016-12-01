@@ -71,3 +71,49 @@ else:
     os.system("htdigest -c /etc/apache2/auth/webauth webserver %s" % (username))
 
 os.system("service apache2 restart")
+
+#rtorrent daemon launcher for the user
+os.system("""cat << EOT >> /etc/init.d/%s-rtorrent
+#!/usr/bin/env bash
+
+# Require : screen, killall et rtorrent
+### BEGIN INIT INFO
+# Provides: <username>-rtorrent
+# Required-Start: $syslog $network
+# Required-Stop: $syslog $network
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start daemon at boot time
+# Description: Start-Stop rtorrent user session
+### END INIT INFO
+
+## Début configuration ##
+user="%s"
+## Fin configuration ##
+
+rt_start() {
+ su --command="screen -dmS ${user}-rtorrent rtorrent" "${user}"
+}
+
+rt_stop() {
+ killall --user "${user}" screen
+}
+
+case "$1" in
+start) echo "Starting rtorrent..."; rt_start
+ ;;
+stop) echo "Stopping rtorrent..."; rt_stop
+ ;;
+restart) echo "Restart rtorrent..."; rt_stop; sleep 1; rt_start
+ ;;
+*) echo "Usage: $0 {start|stop|restart}"; exit 1
+ ;;
+esac
+exit 0
+EOT""" % (username,username))
+
+#Finishing config
+os.system("chmod +x /etc/init.d/%s-rtorrent" % (username))
+os.system("update-rc.d %s-rtorrent defaults" % (username))
+print("Starting rtorrent for %s" % (username))
+os.system("service %s-rtorrent start" % (username))
