@@ -6,6 +6,13 @@ ansible_ssh_user: root
 #APACHE
 ServerName:
 
+#main site
+CertKeyFile: /etc/letsencrypt/live/privkey.pem
+CertFile: /etc/letsencrypt/live/fullchain.pem
+
+#rutorrent subdomain
+CertKeyFile: /etc/letsencrypt/live/rutorrent.domain/privkey.pem
+CertFile: /etc/letsencrypt/live/rutorrent.domain/fullchain.pem
 
 packages: [ 'vim',  'curl', 'apache2',  'rtorrent'  ]
 

@@ -23,3 +23,51 @@ os.system("""cat << EOT >> /etc/apache2/apache2.conf
 EOT""" % (username, username.upper(), uid))
 
 os.system("service apache2 restart")
+
+#Create needed folders for the new user
+os.system("sudo -u %s mkdir -p /home/%s/{torrents,watch,.session}" % (username,username))
+
+#Configure rtorrent
+os.system("""cat << EOT >> /home/%s/.rtorrent.rc
+scgi_port = 127.0.0.1:30%s00
+encoding_list = UTF-8
+port_range = 45000-65000
+port_random = no
+check_hash = no
+directory = /home/%s/torrents
+session = /home/%s/.session
+encryption = allow_incoming, try_outgoing, enable_retry
+schedule = watch_directory,1,1,"load_start=/home/%s/watch/*.torrent"
+schedule = untied_directory,5,5,"stop_untied=/home/%s/watch/*.torrent"
+use_udp_trackers = yes
+dht = off
+peer_exchange = no
+min_peers = 40
+max_peers = 100
+min_peers_seed = 10
+max_peers_seed = 50
+max_uploads = 15
+execute = {sh,-c,/usr/bin/php /var/www/html/rutorrent/php/initplugins.php %s &}
+schedule = disk_space_error,1,30,close_low_diskspace=500M
+EOT""" % (username,uid,username,username,username,username,username))
+
+#Create rutorrent folder for the user
+os.system("sudo -u www-data mkdir /var/www/html/rutorrent/conf/users/%s" % (username))
+os.system("""cat << EOT >> /var/www/html/rutorrent/conf/users/%s/config.php
+<?php
+
+$pathToExternals['curl'] = '/usr/bin/curl';
+$topDirectory = '/home/%s';
+$scgi_port = 30%s00;
+$scgi_host = '127.0.0.1';
+$XMLRPCMountPoint = '/RPC%s';
+EOT""" % (username,username,uid,username.upper()))
+
+os.system("chown www-data:www-data /var/www/html/rutorrent/conf/users/%s/config.php" % (username))
+print("Password for %s rutorrent\n" % (username))
+if os.path.exists(/etc/apache2/auth/webauth):
+    os.system("htdigest /etc/apache2/auth/webauth webserver %s" % (username))
+else:
+    os.system("htdigest -c /etc/apache2/auth/webauth webserver %s" % (username))
+
+os.system("service apache2 restart")
