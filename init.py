@@ -12,11 +12,11 @@ username=raw_input("Username ?\n")
 password=getpass.getpass("Password ?\n")
 createUser(username, password)
 
-#Get last digit of uid to create personal rep
+#Get last digit of uid to create personal id
 uid=getpwnam(username).pw_uid
 uid=str(uid)[3]
 
-#Create Apache/rtorrent mount
+#Create Apache/rtorrent mount for the user
 os.system("""cat << EOT >> /etc/apache2/apache2.conf
 #User: %s
 "SGIMount /RPC%s 127.0.0.1:30%s00"

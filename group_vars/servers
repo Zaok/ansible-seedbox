@@ -4,6 +4,8 @@ ansible_ssh_user: root
 #SSH conf
 
 #APACHE
+ServerName:
+
 
 packages: [ 'vim',  'curl', 'apache2',  'rtorrent'  ]
 

@@ -9,3 +9,9 @@
 - name: Activate Apache2 mod
   command: /usr/sbin/a2enmod {{ item  }}
   with_items: a2enmods
+
+- name: Disable default site
+  command: /usr/bin/a2dissite 000-default
+
+- name: Change default page
+  copy: src=/etc/ansible/roles/seedbox/files/index.html dest=/var/www/html/index.html owner=www-data group=www-data mode=644
