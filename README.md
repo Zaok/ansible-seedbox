@@ -1,5 +1,5 @@
 # ansible-seedbox
-Deploy a multiuser seedbox via puppet
+Deploy a multiuser seedbox via ansible
 
 
 ## Work in progress
