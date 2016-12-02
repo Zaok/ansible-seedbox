@@ -16,4 +16,4 @@ CertFile: /etc/letsencrypt/live/rutorrent.domain/fullchain.pem
 
 packages: [ 'vim',  'curl', 'apache2',  'rtorrent', 'screen'  ]
 
-a2enmods: [ 'ssl',  'auth_digest', 'scgi' ]
+a2enmods: [ 'ssl',  'auth_digest' ]
