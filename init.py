@@ -19,7 +19,7 @@ uid=str(uid)[3]
 #Create Apache/rtorrent mount for the user
 os.system("""cat << EOT >> /etc/apache2/apache2.conf
 #User: %s
-"SGIMount /RPC%s 127.0.0.1:30%s00"
+SCGIMount /RPC%s 127.0.0.1:30%s00
 EOT""" % (username, username.upper(), uid))
 
 os.system("service apache2 restart")
@@ -52,6 +52,7 @@ schedule = disk_space_error,1,30,close_low_diskspace=500M
 EOT""" % (username,uid,username,username,username,username,username))
 
 #Create rutorrent folder for the user
+os.system("chown -R www-data:www-data /var/www/html/rutorrent/")
 os.system("sudo -u www-data mkdir /var/www/html/rutorrent/conf/users/%s" % (username))
 os.system("""cat << EOT >> /var/www/html/rutorrent/conf/users/%s/config.php
 <?php
@@ -63,7 +64,6 @@ $scgi_host = '127.0.0.1';
 $XMLRPCMountPoint = '/RPC%s';
 EOT""" % (username,username,uid,username.upper()))
 
-os.system("chown www-data:www-data /var/www/html/rutorrent/conf/users/%s/config.php" % (username))
 print("Password for %s rutorrent\n" % (username))
 if os.path.exists(/etc/apache2/auth/webauth):
     os.system("htdigest /etc/apache2/auth/webauth webserver %s" % (username))
