@@ -15,3 +15,9 @@
 
 - name: Change default page
   copy: src=/etc/ansible/roles/seedbox/files/index.html dest=/var/www/html/index.html owner=www-data group=www-data mode=644
+
+- name: Clone rutorrent
+  command: git clone https://github.com/Novik/ruTorrent.git /var/www/html/
+
+- name: Add conf file for rutorrent -- torrents creation
+  copy: src=/etc/ansible/roles/seedbox/files/conf.php dest=/var/www/html/rutorrent/plugins/create/conf.php owner=www-data group=www-data mode=644

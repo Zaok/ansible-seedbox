@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#coding=UTF-8
 
 import os, crypt, getpass
 from pwd import getpwnam
@@ -66,7 +67,7 @@ $XMLRPCMountPoint = '/RPC%s';
 EOT""" % (username,username,uid,username.upper()))
 
 print("Password for %s rutorrent\n" % (username))
-if os.path.exists(/etc/apache2/auth/webauth):
+if os.path.exists("/etc/apache2/auth/webauth"):
     os.system("htdigest /etc/apache2/auth/webauth webserver %s" % (username))
 else:
     os.system("htdigest -c /etc/apache2/auth/webauth webserver %s" % (username))
