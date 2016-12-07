@@ -62,6 +62,7 @@ $topDirectory = '/home/%s';
 $scgi_port = 30%s00;
 $scgi_host = '127.0.0.1';
 $XMLRPCMountPoint = '/RPC%s';
+?>
 EOT""" % (username,username,uid,username.upper()))
 
 print("Password for %s rutorrent\n" % (username))
