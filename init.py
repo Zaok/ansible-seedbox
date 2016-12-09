@@ -26,7 +26,9 @@ EOT""" % (username, username.upper(), uid))
 os.system("service apache2 restart")
 
 #Create needed folders for the new user
-os.system("sudo -u %s mkdir -p /home/%s/{torrents,watch,.session}" % (username,username))
+os.system("sudo -u %s mkdir -p /home/%s/torrents" % (username,username))
+os.system("sudo -u %s mkdir -p /home/%s/watch" % (username,username))
+os.system("sudo -u %s mkdir -p /home/%s/.session" % (username,username))
 
 #Configure rtorrent
 os.system("""cat << EOT >> /home/%s/.rtorrent.rc
@@ -58,13 +60,15 @@ os.system("sudo -u www-data mkdir /var/www/html/rutorrent/conf/users/%s" % (user
 os.system("""cat << EOT >> /var/www/html/rutorrent/conf/users/%s/config.php
 <?php
 
-$pathToExternals['curl'] = '/usr/bin/curl';
-$topDirectory = '/home/%s';
-$scgi_port = 30%s00;
-$scgi_host = '127.0.0.1';
-$XMLRPCMountPoint = '/RPC%s';
+\$pathToExternals['curl'] = '/usr/bin/curl';
+\$topDirectory = '/home/%s';
+\$scgi_port = 30%s00;
+\$scgi_host = '127.0.0.1';
+\$XMLRPCMountPoint = '/RPC%s';
 ?>
 EOT""" % (username,username,uid,username.upper()))
+
+os.system("mkdir /etc/apache2/auth")
 
 print("Password for %s rutorrent\n" % (username))
 if os.path.exists("/etc/apache2/auth/webauth"):
@@ -94,21 +98,21 @@ user="%s"
 ## Fin configuration ##
 
 rt_start() {
- su --command="screen -dmS ${user}-rtorrent rtorrent" "${user}"
+ su --command="screen -dmS \${user}-rtorrent rtorrent" "\${user}"
 }
 
 rt_stop() {
- killall --user "${user}" screen
+ killall --user "\${user}" screen
 }
 
-case "$1" in
+case "\$1" in
 start) echo "Starting rtorrent..."; rt_start
  ;;
 stop) echo "Stopping rtorrent..."; rt_stop
  ;;
 restart) echo "Restart rtorrent..."; rt_stop; sleep 1; rt_start
  ;;
-*) echo "Usage: $0 {start|stop|restart}"; exit 1
+*) echo "Usage: \$0 {start|stop|restart}"; exit 1
  ;;
 esac
 exit 0

@@ -72,16 +72,5 @@ NameVirtualHost *:80
     ErrorLog ${APACHE_LOG_DIR}/rutorrent.error.log
     CustomLog ${APACHE_LOG_DIR}/rutorrent.access.log combined
 
-    <Location />
-     AuthType Digest
-     AuthName "webserver"
-     AuthDigestDomain /var/www/html/rutorrent/
-
-     AuthDigestProvider file
-     AuthUserFile /etc/apache2/auth/webauth
-     Require valid-user
-     SetEnv R_ENV "/var/www/html/rutorrent"
-   </Location>
-
   </VirtualHost>
 </IfModule>
