@@ -1,0 +1,8 @@
+AuthType Digest
+AuthName "webserver"
+AuthDigestDomain /var/www/html/rutorrent/
+
+AuthDigestProvider file
+AuthUserFile /etc/apache2/auth/webauth
+Require valid-user
+SetEnv R_ENV "/var/www/html/rutorrent"

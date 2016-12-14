@@ -1,0 +1,76 @@
+NameVirtualHost *:80
+<VirtualHost *:80>
+  ServerAdmin root@localhost
+  ServerName  {{  ServerName  }}
+  redirect / https://{{ ServerName  }}
+
+<IfModule mod_ssl.c>
+	<VirtualHost _default_:443>
+		ServerAdmin webmaster@localhost
+
+		DocumentRoot /var/www/html/index.html
+
+		LogLevel info ssl:warn
+
+		ErrorLog ${APACHE_LOG_DIR}/error.log
+		CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+		SSLEngine on
+
+		SSLCertificateFile	{{ CertFile }}
+		SSLCertificateKeyFile {{ CertKeyFile }}
+
+		<FilesMatch "\.(cgi|shtml|phtml|php)$">
+				SSLOptions +StdEnvVars
+		</FilesMatch>
+		<Directory /usr/lib/cgi-bin>
+				SSLOptions +StdEnvVars
+		</Directory>
+
+		BrowserMatch "MSIE [2-6]" \
+				nokeepalive ssl-unclean-shutdown \
+				downgrade-1.0 force-response-1.0
+		# MSIE 7 and newer should be able to use keepalive
+		BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+	</VirtualHost>
+
+  <VirtualHost *:443>
+
+    ServerName rutorrent.{{ ServerName }}
+    ServerAdmin root@localhost
+
+    DocumentRoot /var/www/html/rutorrent/
+    <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+    </Directory>
+    <Directory /var/www/html/rutorrent/>
+                Options Indexes FollowSymLinks MultiViews
+                AllowOverride All
+                Order allow,deny
+                allow from all
+    </Directory>
+
+    SSLCertificateFile	{{ CertFileRutorrent }}
+    SSLCertificateKeyFile {{ CertKeyFileRutorrent }}
+
+    <FilesMatch "\.(cgi|shtml|phtml|php)$">
+        SSLOptions +StdEnvVars
+    </FilesMatch>
+    <Directory /usr/lib/cgi-bin>
+        SSLOptions +StdEnvVars
+    </Directory>
+
+    BrowserMatch "MSIE [2-6]" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+    # MSIE 7 and newer should be able to use keepalive
+    BrowserMatch "MSIE [17-9]" ssl-unclean-shutdown
+
+    LogLevel info ssl:warn
+    ErrorLog ${APACHE_LOG_DIR}/rutorrent.error.log
+    CustomLog ${APACHE_LOG_DIR}/rutorrent.access.log combined
+
+  </VirtualHost>
+</IfModule>
