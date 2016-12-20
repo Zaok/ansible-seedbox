@@ -27,3 +27,6 @@
 
 - name: Copy rutorrent .htaccess
   copy: src=/etc/ansible/roles/seedbox/files/.htaccess dest=/var/www/html/ruttorent/.htaccess owner=www-data group=www-data mode=644
+
+- name: vsftpd restart
+  command: restart vsftpd

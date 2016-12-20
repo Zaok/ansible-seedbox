@@ -15,6 +15,6 @@ CertKeyFile: /etc/letsencrypt/live/rutorrent.domain/privkey.pem
 CertFile: /etc/letsencrypt/live/rutorrent.domain/fullchain.pem
 
 #packages list - to install
-packages: [ 'vim',  'curl', 'apache2', 'rtorrent', 'screen', 'git', 'libapache2-mod-scgi', 'php5' ]
+packages: [ 'vim',  'curl', 'apache2', 'rtorrent', 'screen', 'git', 'libapache2-mod-scgi', 'php5', 'vsftpd' ]
 
 a2enmods: [ 'ssl',  'auth_digest', 'rewrite' ]
